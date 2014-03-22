@@ -1,0 +1,49 @@
+<html>
+<head>
+
+</head>
+<body>
+
+<script type="text/javascript" src="simpleclass.js"></script>
+<script type="text/javascript">
+var Walker = {
+	walk: function() {
+		console.log('where are we going?');
+	}
+};
+
+var Animal = new Class({
+	Implements: Walker,
+
+	initialize: function() {
+		this.phrase = 'I cannot talk!';
+	},
+
+	talk: function() {
+		console.log(this.phrase);
+	}
+});
+
+var animal = new Animal();
+animal.talk();
+animal.walk();
+
+var Cat = new Class({
+	Extends: Animal,
+
+	initialize: function() {
+		this.phrase = 'meow';
+	},
+
+	walk: function() {
+		console.log('let\'s get some milk');
+	}
+});
+
+var cat = new Cat();
+cat.talk();
+cat.walk();
+</script>
+
+</body>
+</html>
