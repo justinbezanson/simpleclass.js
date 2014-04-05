@@ -33,7 +33,6 @@
 			delete prototype.Implements;
 		}
 
-		//Class.prototype = SimpleClass.extend(Class.prototype, prototype);
 		for(var name in prototype) {
 			Class.prototype[name] = !Class.prototype[name] ? 
 				prototype[name] :
