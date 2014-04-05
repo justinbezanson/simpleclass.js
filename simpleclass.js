@@ -14,6 +14,9 @@
 			
 			Class.prototype = Object.create(obj.prototype);
 			Class.prototype.constructor = ctor;
+			Class.prototype.parent = function() {
+					obj.apply(this, arguments);
+			};
 
 			delete prototype.Extends;
 		}
@@ -30,7 +33,21 @@
 			delete prototype.Implements;
 		}
 
-		Class.prototype = SimpleClass.extend(Class.prototype, prototype);
+		//Class.prototype = SimpleClass.extend(Class.prototype, prototype);
+		for(var name in prototype) {
+			Class.prototype[name] = !Class.prototype[name] ? 
+				prototype[name] :
+				(function(n, fn) {
+					var tmp = Class.prototype[n];
+					return function() {
+						this.parent = function() {
+							tmp.apply(this, arguments);
+						};
+
+						return fn.apply(this, arguments);
+					}
+				})(name, prototype[name]);
+		}
 
 		return Class;
 	};
@@ -39,17 +56,17 @@
 	 *  typeof utility - http://javascript.crockford.com/remedial.html
 	 */
 	SimpleClass.typeof = function typeOf(value) {
-	    var s = typeof value;
-	    if (s === 'object') {
-	        if (value) {
-	            if (Object.prototype.toString.call(value) == '[object Array]') {
-	                s = 'array';
-	            }
-	        } else {
-	            s = 'null';
-	        }
+	  var s = typeof value;
+	  if (s === 'object') {
+	    if (value) {
+        if (Object.prototype.toString.call(value) == '[object Array]') {
+          s = 'array';
+        }
+	    } else {
+    		s = 'null';
 	    }
-	    return s;
+	  }
+	  return s;
 	};
 
 	/**

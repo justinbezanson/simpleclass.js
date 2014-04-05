@@ -6,43 +6,42 @@
 
 <script type="text/javascript" src="simpleclass.js"></script>
 <script type="text/javascript">
-var Walker = {
-	walk: function() {
-		console.log('where are we going?');
-	}
-};
-
 var Animal = new Class({
-	Implements: Walker,
-
-	initialize: function() {
-		this.phrase = 'I cannot talk!';
+	initialize: function(name) {
+		this.phrase = 'My name is ' + name;
 	},
 
 	talk: function() {
 		console.log(this.phrase);
+	},
+
+	say: function(words) {
+		console.log(words);
 	}
 });
 
-var animal = new Animal();
-animal.talk();
-animal.walk();
+var animal = new Animal('Animal');
+animal.say('hello');
 
 var Cat = new Class({
 	Extends: Animal,
 
-	initialize: function() {
-		this.phrase = 'meow';
+	initialize: function(name) {
+		this.parent(name);
 	},
 
-	walk: function() {
-		console.log('let\'s get some milk');
+	talk: function() {
+		console.log(this.phrase);
+	},
+
+	say: function(words) {
+		this.parent(words);
 	}
 });
 
-var cat = new Cat();
+var cat = new Cat('Cat');
 cat.talk();
-cat.walk();
+cat.say('world');
 </script>
 
 </body>
