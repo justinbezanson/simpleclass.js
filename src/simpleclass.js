@@ -79,17 +79,5 @@
 		return object1;
 	};
 
-	SimpleClass.clone = function(obj) {
-		console.log('step 1');
-	    if (null == obj || "object" != typeof obj) return obj;
-	    console.log('step 2');
-	    console.log(obj);
-	    var copy = obj.constructor();
-	    for (var attr in obj) {
-	        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-	    }
-	    return copy;
-	}
-
 	exports.Class = SimpleClass;
 })(window);
