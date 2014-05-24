@@ -15,6 +15,56 @@
   	Extends: Animal
   });
 
+  var Flyer = {
+    fly: function() {
+      this.action = 'flying';
+    }
+  };
+
+  var Bird = new Class({
+    initialize: function() {
+      this.action = 'standing';
+    },
+
+    Implements: Flyer
+  });
+
+  var BirdOverride = new Class({
+    initialize: function() {
+      this.action = 'standing';
+    },
+
+    fly: function() {
+      this.action = 'flying fast';
+    },
+
+    Implements: Flyer
+  });
+
+  var BirdInherit = new Class({
+    Extends: Bird
+  });
+
+  var BirdInheritOverride = new Class({
+    Extends: Bird,
+
+    fly: function() {
+      this.action = 'flying override';
+    }
+  });
+
+  var BirdInheritOverrideParent = new Class({
+    Extends: Bird,
+
+    initialize: function() {
+      this.parent();
+    },
+
+    fly: function() {
+      this.parent();
+    }
+  });
+
   test('basic instanceof', function() {
   	var animal = new Animal('Bob');
     equal(animal instanceof Animal, true);
@@ -37,8 +87,38 @@
   });
 
   test('inherited rename method', function() {
-  	var cat = new Cat('Oliver'); 
+  	var cat = new Cat('Oliver');
   	cat.rename('Fred');
   	equal(cat.name, 'Fred');
+  });
+
+  test('basic interface', function() {
+    var bird = new Bird();
+    bird.fly();
+    equal(bird.action, 'flying');
+  });
+
+  test('basic interface override', function() {
+    var bird = new BirdOverride();
+    bird.fly();
+    equal(bird.action, 'flying fast');
+  });
+
+  test('inherited interface', function() {
+    var bird = new BirdInherit();
+    bird.fly();
+    equal(bird.action, 'flying');
+  });
+
+  test('inherited interface override', function() {
+    var bird = new BirdInheritOverride();
+    bird.fly();
+    equal(bird.action, 'flying override');
+  });
+
+  test('inherited interface override parent', function() {
+    var bird = new BirdInheritOverrideParent();
+    bird.fly();
+    equal(bird.action, 'flying');
   });
 })();

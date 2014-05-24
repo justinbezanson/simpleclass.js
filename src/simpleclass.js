@@ -3,8 +3,9 @@
 
 	var SimpleClass = function(prototype) {
 		var prototype = prototype || {},
-        Class = prototype.initialize || prototype.Extends || function() {},
-			  ctor = Class;
+			baseInit = prototype.Extends ? prototype.Extends.prototype.constructor : function() {},
+			Class = prototype.initialize || baseInit || function() {},
+			ctor = Class;
 
 		if(prototype.initialize) {
 			delete prototype.initialize;
@@ -14,10 +15,8 @@
 			var obj = prototype.Extends;
 			
 			Class.prototype = Object.create(obj.prototype);
-			Class.prototype.constructor = ctor;
-			Class.prototype.parent = function() {
-					obj.apply(this, arguments);
-			};
+			Class.prototype.constructor = function() { ctor.apply(this, arguments); };
+			Class.prototype.parent = function() { obj.apply(this, arguments); };
 
 			delete prototype.Extends;
 		}
@@ -79,6 +78,18 @@
 
 		return object1;
 	};
+
+	SimpleClass.clone = function(obj) {
+		console.log('step 1');
+	    if (null == obj || "object" != typeof obj) return obj;
+	    console.log('step 2');
+	    console.log(obj);
+	    var copy = obj.constructor();
+	    for (var attr in obj) {
+	        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+	    }
+	    return copy;
+	}
 
 	exports.Class = SimpleClass;
 })(window);
