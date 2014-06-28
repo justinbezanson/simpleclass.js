@@ -121,4 +121,47 @@
     bird.fly();
     equal(bird.action, 'flying');
   });
+
+  test('extend function', function() {
+    var object1 = {
+        '1': 'apples',
+        '2': 'oranges'
+      },
+      object2 = {
+        '2': 'carrots',
+        '3': 'peas'
+      },
+      object3 = Class.extend(object1, object2),
+      object4 = {
+        '1': 'apples',
+        '2': 'carrots',
+        '3': 'peas'
+      };
+
+    equal(true, object3['1'] == 'apples' && object3['2'] == 'carrots' && object3['3'] == 'peas');
+  });
+
+  test('typeof array', function() {
+    equal(Class.typeof([]), 'array');
+  }); 
+
+  test('typeof object', function() {
+    equal(Class.typeof({}), 'object');
+  });
+
+  test('typeof function', function() {
+    equal(Class.typeof(function(){}), 'function');
+  }); 
+
+  test('typeof int', function() {
+    equal(Class.typeof(5), 'number');
+  });
+
+  test('typeof string', function() {
+    equal(Class.typeof('hi'), 'string');
+  });
+
+  test('typeof float', function() {
+    equal(Class.typeof(parseFloat(5)), 'number');
+  });
 })();
